@@ -3,18 +3,46 @@ from gi.repository import GLib, Gtk
 from gedit_seahorse_ui import Ui
 
 class Encrypter(object):
-    def __init__(self):
+    def __init__(self, action):
         GLib.idle_add( self.run )
-        GLib.timeout_add( 3000, self.quit )
+        self.action = action
         self.ui = Ui( "gedit-seahorse", "gedit-seahorse.glade" )
     
     def run(self):
     
         self.bus = dbus.SessionBus()
-        proxy_obj = self.bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
-        dbus_iface = dbus.Interface(proxy_obj, 'org.freedesktop.DBus')
-
         
+        self.init_dbus()
+        
+        self.populate_keys_list()
+        
+        self.chosen = self.select_key()
+        if self.chosen:
+            self.action( self )
+        
+        self.quit()
+        
+    def init_dbus(self):
+        keys_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/keys')
+        key_service = dbus.Interface(keys_proxy, 'org.gnome.seahorse.KeyService')
+        
+        types = key_service.GetKeyTypes()
+        print "GetKeyTypes(): ", types
+
+        path = key_service.GetKeyset(types[0])
+        print "GetKeySet(): ", path
+        
+        proxy_obj = self.bus.get_object('org.gnome.seahorse', path)
+        self.keyset = dbus.Interface(proxy_obj, "org.gnome.seahorse.Keys")
+    
+    def select_key(self):
+        
+        resp = self.ui.main.run()
+        self.ui.main.hide()
+        if resp != 1:
+            return
+        return list( self.shown[self.ui.key_selection.get_selected()[1]] )
+    
     def populate_keys_list(self):
         keys = self.keyset.ListKeys()
         
@@ -46,43 +74,20 @@ class Encrypter(object):
         return search in self.ui.keys[the_iter][0]
     
     def activate_OK_button(self, selection):
-        print selection.get_selected()
         self.ui.OK_button.set_sensitive( selection.get_selected()[1] )
     
-    def encrypt(self, text):
-        proxy_obj = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/keys')
-        service = dbus.Interface(proxy_obj, 'org.gnome.seahorse.KeyService')
+    def encrypt(self):
         
-
-        proxy_obj = self.bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
-        dbus_iface = dbus.Interface(proxy_obj, 'org.freedesktop.DBus')
+        cr_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/crypto')
+        cr_service = dbus.Interface(cr_proxy, 'org.gnome.seahorse.CryptoService')
         
-        types = service.GetKeyTypes()
-        print "GetKeyTypes(): ", types
-
-        path = service.GetKeyset(types[0])
-        print "GetKeySet(): ", path
-        
-        if not len(types):
-            print "No key types found"
-            sys.exit(0)
-
-        proxy_obj = self.bus.get_object('org.gnome.seahorse', path)
-        self.keyset = dbus.Interface(proxy_obj, "org.gnome.seahorse.Keys")
-        self.populate_keys_list()
-        
-        resp = self.ui.main.run()
-        if resp != 1:
-            return
-        
-        chosen = list( self.shown[self.ui.key_selection.get_selected()[1]] )
-        print chosen
+        encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, "cleartext")
+        print "Encrypted: ", encrypted
     
     def quit(self):
         Gtk.main_quit()
 
 
 if __name__ == "__main__":
-    sgp = Encrypter()
-    GLib.idle_add( sgp.encrypt, "ciao" )
+    sgp = Encrypter(Encrypter.encrypt)
     Gtk.main()
