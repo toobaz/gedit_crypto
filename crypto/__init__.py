@@ -1,5 +1,6 @@
-from gi.repository import GObject, Gedit, Gtk
+from gi.repository import GObject, Gedit, Gtk, Gedit
 import os
+from encrypter import Encrypter
 
 class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "CryptoPlugin"
@@ -7,6 +8,8 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     
     def __init__(self):
         GObject.Object.__init__(self)
+        
+        self.enc = None
         
         try:
             print "Initialized"
@@ -22,8 +25,12 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             print self.plugin_info.get_data_dir()
             self.insert_menu_items()
             print "Window %s activated oh yes." % self.window
+            
+            self.ui.connect_signals( self )
         except Exception, msg:
-            print "oh no", msg
+            import traceback
+            print "oh no"
+            print traceback.print_exc()
 
     def do_deactivate(self):
         print "Window %s deactivated." % self.window
@@ -49,5 +56,20 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         manager.add_ui_from_file( menu_ui_path )
         
         manager.ensure_update()
+    
+    def encrypt(self, action):
+        if self.enc == None:
+            self.enc = Encrypter(self.ui)
         
-        print "done"
+        view = self.window.get_active_view()
+        doc = view.get_buffer()
+        start = doc.get_start_iter()
+        end = doc.get_end_iter()
+        cleartext = doc.get_text( start, end, False )
+        
+        encrypted = self.enc.encrypt( cleartext )
+        
+        self.window.create_tab( True )
+        new_view = self.window.get_active_view()
+        new_doc = new_view.get_buffer()
+        new_doc.set_text( encrypted )

@@ -6,6 +6,7 @@
   </object>
   <object class="GtkAction" id="EncryptAction">
     <property name="label" translatable="yes">Encrypt document</property>
+    <signal name="activate" handler="encrypt" swapped="no"/>
   </object>
   <object class="GtkListStore" id="keys">
     <columns>
