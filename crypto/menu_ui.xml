@@ -3,10 +3,10 @@
     <menu name="FileMenu" action="File">
       <placeholder name="FileOps_3">
         <separator/>
-        <menu name="SeahorseMenu" action="Seahorse">
-          <placeholder name="SeahorsePlaceHolder"/>
+        <menu name="CryptoMenu" action="CryptoAction">
+          <placeholder name="CryptoPlaceHolder"/>
           <separator/>
-          <menuitem name="SeahorseEncrypt" action="SeahorseEncrypt"/>
+          <menuitem name="Encrypt" action="EncryptAction"/>
         </menu>
       </placeholder>
     </menu>

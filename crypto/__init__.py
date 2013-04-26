@@ -1,14 +1,14 @@
 from gi.repository import GObject, Gedit, Gtk
 
-class GeditSeahorse(GObject.Object, Gedit.WindowActivatable):
-    __gtype_name__ = "Gedit_seahorse"
+class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
+    __gtype_name__ = "CryptoPlugin"
     window = GObject.property(type=Gedit.Window)
     
     def __init__(self):
         GObject.Object.__init__(self)
         try:
-            from gedit_seahorse_ui import Ui
-            self.ui = Ui( "gedit-seahorse", "gedit-seahorse.glade" )
+            from crypto_ui import Ui
+            self.ui = Ui( "gedit-crypto", "crypto.glade" )
         except Exception, msg:
             print "oh no init", msg
     
@@ -30,8 +30,8 @@ class GeditSeahorse(GObject.Object, Gedit.WindowActivatable):
         
         self.ui_id = manager.new_merge_id()
         
-        self.action_group = Gtk.ActionGroup("SeahorseActions")
+        self.action_group = Gtk.ActionGroup("CryptoActions")
         
-        self.action_group.add_actions( self.ui.SeahorseEncrypt )
+        self.action_group.add_actions( self.ui.EncryptAction )
         
         print "done"

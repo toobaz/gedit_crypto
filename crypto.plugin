@@ -1,9 +1,9 @@
 [Plugin]
 Loader=python
-Module=seahorse
+Module=crypto
 IAge=3
-Name=Seahorse
-Description=Encrypt/decrypt with seahorse
+Name=Crypto
+Description=Encrypt/decrypt using Seahorse DBus service
 Authors=Pietro Battiston
 Copyright=Copyright © 2013 Pietro Battiston
 Website=http://pietrobattiston.it

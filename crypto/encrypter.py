@@ -1,12 +1,12 @@
 import dbus
 from gi.repository import GLib, Gtk
-from gedit_seahorse_ui import Ui
+from crypto_ui import Ui
 
 class Encrypter(object):
     def __init__(self, action):
         GLib.idle_add( self.run )
         self.action = action
-        self.ui = Ui( "gedit-seahorse", "gedit-seahorse.glade" )
+        self.ui = Ui( "gedit-crypto", "crypto.glade" )
     
     def run(self):
     
