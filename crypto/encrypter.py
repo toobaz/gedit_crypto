@@ -12,10 +12,8 @@ class Encrypter(object):
         key_service = dbus.Interface(keys_proxy, 'org.gnome.seahorse.KeyService')
         
         types = key_service.GetKeyTypes()
-        print "GetKeyTypes(): ", types
-
+        
         path = key_service.GetKeyset(types[0])
-        print "GetKeySet(): ", path
         
         proxy_obj = self.bus.get_object('org.gnome.seahorse', path)
         self.keyset = dbus.Interface(proxy_obj, "org.gnome.seahorse.Keys")
