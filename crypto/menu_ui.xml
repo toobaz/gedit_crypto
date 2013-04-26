@@ -5,6 +5,7 @@
         <menu name="CryptoMenu" action="CryptoAction">
           <placeholder name="CryptoPlaceHolder"/>
           <menuitem name="Encrypt" action="EncryptAction"/>
+          <menuitem name="Decrypt" action="DecryptAction"/>
         </menu>
       </placeholder>
     </menu>

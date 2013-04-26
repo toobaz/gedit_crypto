@@ -74,3 +74,11 @@ class Encrypter(object):
         
         encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, cleartext)
         return encrypted
+    
+    def decrypt(self, encrypted_text):
+        cr_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/crypto')
+        cr_service = dbus.Interface(cr_proxy, 'org.gnome.seahorse.CryptoService')
+        
+        # Notice "signer" is not returned:
+        cleartext, signer = cr_service.DecryptText( "openpgp", 0, encrypted_text )
+        return cleartext

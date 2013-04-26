@@ -48,6 +48,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         self.action_group = Gtk.ActionGroup("CryptoActions")
         
         self.action_group.add_action( self.ui.EncryptAction )
+        self.action_group.add_action( self.ui.DecryptAction )
         self.action_group.add_action( self.ui.CryptoAction )
         
         manager.insert_action_group( self.action_group )
@@ -60,17 +61,39 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     
     def encrypt(self, action):
         if self.enc == None:
-            self.enc = Encrypter(self.ui)
+            self.enc = Encrypter( self.ui )
         
+        cleartext = self.get_current_text()
+        
+        encrypted = self.enc.encrypt( cleartext )
+        
+        if not encrypted:
+            return
+        
+        self.show_in_new_document( encrypted )
+    
+    def decrypt(self, action):
+        if self.enc == None:
+            self.enc = Encrypter( self.ui )
+        
+        encrypted_text = self.get_current_text()
+        
+        cleartext = self.enc.decrypt( encrypted_text )
+        
+        if not cleartext:
+            return
+        
+        self.show_in_new_document( cleartext )
+        
+    def get_current_text(self):
         view = self.window.get_active_view()
         doc = view.get_buffer()
         start = doc.get_start_iter()
         end = doc.get_end_iter()
-        cleartext = doc.get_text( start, end, False )
-        
-        encrypted = self.enc.encrypt( cleartext )
-        
+        return doc.get_text( start, end, False )
+    
+    def show_in_new_document(self, text):
         self.window.create_tab( True )
         new_view = self.window.get_active_view()
         new_doc = new_view.get_buffer()
-        new_doc.set_text( encrypted )
+        new_doc.set_text( text )

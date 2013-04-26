@@ -4,6 +4,11 @@
   <object class="GtkAction" id="CryptoAction">
     <property name="label" translatable="yes">Encrypt/decrypt</property>
   </object>
+  <object class="GtkAction" id="DecryptAction">
+    <property name="label" translatable="yes">Decrypt document</property>
+    <property name="short_label" translatable="yes">Decrypt document</property>
+    <signal name="activate" handler="decrypt" swapped="no"/>
+  </object>
   <object class="GtkAction" id="EncryptAction">
     <property name="label" translatable="yes">Encrypt document</property>
     <signal name="activate" handler="encrypt" swapped="no"/>
