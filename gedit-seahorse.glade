@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAction" id="SeahorseEncrypt">
+    <property name="label" translatable="yes">Encrypt document</property>
+  </object>
   <object class="GtkListStore" id="keys">
     <columns>
       <!-- column-name key -->
