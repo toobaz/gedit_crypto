@@ -6,42 +6,44 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "CryptoPlugin"
     window = GObject.property(type=Gedit.Window)
     
-    def __init__(self):
-        GObject.Object.__init__(self)
-        
-        self.enc = None
-        
-        try:
-            print "Initialized"
-        except Exception, msg:
-            print "oh no init", msg
-    
     def do_activate(self):
         try:
-            from crypto_ui import Ui
-            DATA_DIR = self.plugin_info.get_data_dir()
-            ui_path = os.path.join( DATA_DIR, "crypto.glade" )
-            self.ui = Ui( "gedit-crypto", ui_path )
-            print self.plugin_info.get_data_dir()
-            self.insert_menu_items()
-            print "Window %s activated oh yes." % self.window
-            
-            self.ui.connect_signals( self )
+            self.initialize()
         except Exception, msg:
             import traceback
-            print "oh no"
+            print "Error initializing \"Crypto\" plugin"
             print traceback.print_exc()
-
+    
+    def initialize(self):
+        from crypto_ui import Ui
+        
+        self.data_dir = self.plugin_info.get_data_dir()
+        
+        ui_path = os.path.join( self.data_dir, "crypto.glade" )
+        self.ui = Ui( "gedit-crypto", ui_path )
+        self.ui.connect_signals( self )
+        
+        self.insert_menu_items()
+        
+        # Build encrypter when needed to not slow down Gedit startup
+        self.enc = None
+    
     def do_deactivate(self):
-        print "Window %s deactivated." % self.window
-
+        """
+        Just remove submenu.
+        """
+        manager = self.window.get_ui_manager()
+        manager.remove_ui( self.ui_id )
+        manager.ensure_update()
+    
     def do_update_state(self):
-        print "Window %s state updated." % self.window
+        pass
     
     def insert_menu_items(self):
+        """
+        Insert submenu and menu items in Gedit "File" menu.
+        """
         manager = self.window.get_ui_manager()
-        
-        self.ui_id = manager.new_merge_id()
         
         self.action_group = Gtk.ActionGroup("CryptoActions")
         
@@ -50,10 +52,9 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         
         manager.insert_action_group( self.action_group )
         
-        DATA_DIR = self.plugin_info.get_data_dir()
-        menu_ui_path = os.path.join( DATA_DIR, "menu_ui.xml" )
+        menu_ui_path = os.path.join( self.data_dir, "menu_ui.xml" )
         
-        manager.add_ui_from_file( menu_ui_path )
+        self.ui_id = manager.add_ui_from_file( menu_ui_path )
         
         manager.ensure_update()
     

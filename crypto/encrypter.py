@@ -3,19 +3,10 @@ from gi.repository import GLib, Gtk
 
 class Encrypter(object):
     def __init__(self, ui):
-        self.run
         self.ui = ui
         self.bus = dbus.SessionBus()
         self.init_dbus()
-    
-    def run(self):
-    
-        
-        
-        
-        
-        self.quit()
-        
+            
     def init_dbus(self):
         keys_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/keys')
         key_service = dbus.Interface(keys_proxy, 'org.gnome.seahorse.KeyService')
@@ -83,11 +74,3 @@ class Encrypter(object):
         
         encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, cleartext)
         return encrypted
-    
-    def quit(self):
-        Gtk.main_quit()
-
-
-if __name__ == "__main__":
-    sgp = Encrypter()
-    Gtk.main()
