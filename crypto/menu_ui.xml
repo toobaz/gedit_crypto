@@ -2,10 +2,8 @@
   <menubar name="MenuBar">
     <menu name="FileMenu" action="File">
       <placeholder name="FileOps_3">
-        <separator/>
         <menu name="CryptoMenu" action="CryptoAction">
           <placeholder name="CryptoPlaceHolder"/>
-          <separator/>
           <menuitem name="Encrypt" action="EncryptAction"/>
         </menu>
       </placeholder>
