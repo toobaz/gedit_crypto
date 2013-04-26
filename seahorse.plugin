@@ -1,0 +1,10 @@
+[Plugin]
+Loader=python
+Module=seahorse
+IAge=3
+Name=Seahorse
+Description=Encrypt/decrypt with seahorse
+Authors=Pietro Battiston
+Copyright=Copyright © 2013 Pietro Battiston
+Website=http://pietrobattiston.it
+Version=0.1
