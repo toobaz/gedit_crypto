@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAction" id="CryptoAction">
+    <property name="label" translatable="yes">Encrypt/decrypt</property>
+  </object>
   <object class="GtkAction" id="EncryptAction">
     <property name="label" translatable="yes">Encrypt document</property>
   </object>
