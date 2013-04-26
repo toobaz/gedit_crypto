@@ -1,24 +1,18 @@
 import dbus
 from gi.repository import GLib, Gtk
-from crypto_ui import Ui
 
 class Encrypter(object):
-    def __init__(self, action):
-        GLib.idle_add( self.run )
-        self.action = action
-        self.ui = Ui( "gedit-crypto", "crypto.glade" )
+    def __init__(self, ui):
+        self.run
+        self.ui = ui
+        self.bus = dbus.SessionBus()
+        self.init_dbus()
     
     def run(self):
     
-        self.bus = dbus.SessionBus()
         
-        self.init_dbus()
         
-        self.populate_keys_list()
         
-        self.chosen = self.select_key()
-        if self.chosen:
-            self.action( self )
         
         self.quit()
         
@@ -36,6 +30,7 @@ class Encrypter(object):
         self.keyset = dbus.Interface(proxy_obj, "org.gnome.seahorse.Keys")
     
     def select_key(self):
+        self.populate_keys_list()
         
         resp = self.ui.main.run()
         self.ui.main.hide()
@@ -52,6 +47,8 @@ class Encrypter(object):
         self.ui.keys_view.set_model( self.shown )
         self.ui.search.connect( "changed", (lambda x : self.shown.refilter()) )
         self.ui.key_selection.connect( "changed", self.activate_OK_button )
+        
+        self.ui.keys.clear()
         
         fields_names = [ "display-name", "display-id", "raw-id", "fingerprint", "key-desc", "flags", "expires" ]
         # Usually missing: "fingerprint"
@@ -74,20 +71,23 @@ class Encrypter(object):
         return search in self.ui.keys[the_iter][0]
     
     def activate_OK_button(self, selection):
-        self.ui.OK_button.set_sensitive( selection.get_selected()[1] )
+        self.ui.OK_button.set_sensitive( bool( selection.get_selected()[1] ) )
     
-    def encrypt(self):
+    def encrypt(self, cleartext):
+        self.chosen = self.select_key()
+        if not self.chosen:
+            return
         
         cr_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/crypto')
         cr_service = dbus.Interface(cr_proxy, 'org.gnome.seahorse.CryptoService')
         
-        encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, "cleartext")
-        print "Encrypted: ", encrypted
+        encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, cleartext)
+        return encrypted
     
     def quit(self):
         Gtk.main_quit()
 
 
 if __name__ == "__main__":
-    sgp = Encrypter(Encrypter.encrypt)
+    sgp = Encrypter()
     Gtk.main()
