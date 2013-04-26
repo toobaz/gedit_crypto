@@ -72,13 +72,28 @@ class Encrypter(object):
         cr_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/crypto')
         cr_service = dbus.Interface(cr_proxy, 'org.gnome.seahorse.CryptoService')
         
-        encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, cleartext)
-        return encrypted
+        try:
+            encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, cleartext)
+            return encrypted
+        except dbus.exceptions.DBusException, msg:
+            self.ui.error.set_title( "Encryption error" )
+            self.ui.error.set_markup( "The encryption process failed due to the following error:" )
+            self.ui.error.format_secondary_text( msg )
+            self.ui.error.run()
+            self.ui.error.hide()
     
     def decrypt(self, encrypted_text):
         cr_proxy = self.bus.get_object('org.gnome.seahorse', '/org/gnome/seahorse/crypto')
         cr_service = dbus.Interface(cr_proxy, 'org.gnome.seahorse.CryptoService')
         
-        # Notice "signer" is not returned:
-        cleartext, signer = cr_service.DecryptText( "openpgp", 0, encrypted_text )
-        return cleartext
+        try:
+            # Notice "signer" is not returned:
+            cleartext, signer = cr_service.DecryptText( "openpgp", 0, encrypted_text )
+            return cleartext
+        except dbus.exceptions.DBusException, msg:
+            self.ui.error.set_title( "Decryption error" )
+            self.ui.error.set_markup( "The decryption process failed due to the following error:" )
+            self.ui.error.format_secondary_text( msg )
+            self.ui.error.run()
+            self.ui.error.hide()
+
