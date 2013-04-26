@@ -2,6 +2,8 @@ from gi.repository import GObject, Gedit, Gtk, Gedit
 import os
 from encrypter import Encrypter
 
+__version__ = '0.0'
+
 class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "CryptoPlugin"
     window = GObject.property(type=Gedit.Window)
