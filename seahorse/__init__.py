@@ -7,7 +7,8 @@ class GeditSeahorse(GObject.Object, Gedit.WindowActivatable):
     def __init__(self):
         GObject.Object.__init__(self)
         try:
-            import gedit_seahorse_ui
+            from gedit_seahorse_ui import Ui
+            self.ui = Ui( "gedit-seahorse", "gedit-seahorse.glade" )
         except Exception, msg:
             print "oh no init", msg
     
