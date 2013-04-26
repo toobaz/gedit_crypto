@@ -1,0 +1,4 @@
+gedit-plugin-crypto 0.1, 2013-04-26
+  * First version.
+  * The plugin encrypts/decrypts text in a new tab.
+
