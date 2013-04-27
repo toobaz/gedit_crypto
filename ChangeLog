@@ -1,3 +1,7 @@
+gedit-plugin-crypto 0.2, 2013-04-27
+  * Do not propose subkeys for encryption
+  * Case-insensitive search in key selection dialog
+
 gedit-plugin-crypto 0.1, 2013-04-26
   * First version.
   * The plugin encrypts/decrypts text in a new tab.
