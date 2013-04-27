@@ -63,11 +63,15 @@
   </object>
   <object class="GtkListStore" id="keys">
     <columns>
-      <!-- column-name key -->
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name id -->
       <column type="gchararray"/>
       <!-- column-name fingerprint -->
       <column type="gchararray"/>
-      <!-- column-name other -->
+      <!-- column-name lowercase -->
+      <column type="gchararray"/>
+      <!-- column-name key -->
       <column type="gchararray"/>
     </columns>
   </object>
@@ -197,11 +201,22 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="treeviewcolumn1">
-                        <property name="title" translatable="yes">Fingerprint</property>
+                        <property name="title" translatable="yes">Id</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
                           <attributes>
                             <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                        <property name="title" translatable="yes">Fingerprint</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
                           </attributes>
                         </child>
                       </object>

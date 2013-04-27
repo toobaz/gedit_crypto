@@ -39,17 +39,22 @@ class Encrypter(object):
         
         self.ui.keys.clear()
         
-        fields_names = [ "display-name", "display-id", "raw-id", "fingerprint", "key-desc", "flags", "expires" ]
-        # Usually missing: "fingerprint"
-        # Never found: "expires"
+        fields_names = [ "display-name", "display-id", "fingerprint" ]
+        # Fields are well described in
+        # https://lug.asprion.org/wiki/1/Seahorse_DBUS_Interface
+        # "fingerprint" is present iff it is a main key (and we want only
+        # those).
+        # Never found: "expires","enc-type"
         # "display-id" always the same as "raw-id"
         
         for key in keys:
             fields = dict( self.keyset.GetKeyFields(key, fields_names ) )
-#            if fields["flags"] != 0:
-#                print "flags", fields["flags"]
-            self.ui.keys.append( [unicode(fields["display-name"]), unicode(fields["raw-id"]), key] )
-#            self.ui.keys.append( [unicode(fields["display-name"]), str(fields), ''] )
+            if "fingerprint" in fields:
+                self.ui.keys.append( [unicode( fields["display-name"] ),
+                                      unicode( fields["display-id"] ),
+                                      unicode( fields["fingerprint"] ),
+                                      unicode( fields["display-name"] ).lower(),
+                                      key] )
     
     def show_key(self, store, the_iter, data):
         search = self.ui.search.get_text()
@@ -57,7 +62,7 @@ class Encrypter(object):
             # No search currently active
             return True
         
-        return search in self.ui.keys[the_iter][0]
+        return search.lower() in self.ui.keys[the_iter][3]
     
     def activate_OK_button(self, selection):
         self.ui.OK_button.set_sensitive( bool( selection.get_selected()[1] ) )
@@ -71,7 +76,8 @@ class Encrypter(object):
         cr_service = dbus.Interface(cr_proxy, 'org.gnome.seahorse.CryptoService')
         
         try:
-            encrypted = cr_service.EncryptText([self.chosen[2]], "", 0, cleartext)
+            key = self.chosen[-1]
+            encrypted = cr_service.EncryptText([key], "", 0, cleartext)
             return encrypted
         except dbus.exceptions.DBusException, msg:
             self.ui.error.set_title( "Encryption error" )
