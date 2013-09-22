@@ -1,6 +1,6 @@
 from gi.repository import GObject, Gedit, Gtk, Gedit
 import os
-from encrypter import Encrypter
+from .encrypter import Encrypter
 
 __version__ = '0.2'
 
@@ -11,13 +11,13 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     def do_activate(self):
         try:
             self.initialize()
-        except Exception, msg:
+        except Exception as msg:
             import traceback
-            print "Error initializing \"Crypto\" plugin"
-            print traceback.print_exc()
+            print("Error initializing \"Crypto\" plugin")
+            print(traceback.print_exc())
     
     def initialize(self):
-        from crypto_ui import Ui
+        from .crypto_ui import Ui
         
         self.data_dir = self.plugin_info.get_data_dir()
         

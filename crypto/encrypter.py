@@ -50,11 +50,11 @@ class Encrypter(object):
         for key in keys:
             fields = dict( self.keyset.GetKeyFields(key, fields_names ) )
             if "fingerprint" in fields:
-                self.ui.keys.append( [unicode( fields["display-name"] ),
-                                      unicode( fields["display-id"] ),
-                                      unicode( fields["fingerprint"] ),
-                                      unicode( fields["display-name"] ).lower(),
-                                      key] )
+                self.ui.keys.append([fields["display-name"],
+                                     fields["display-id"],
+                                     fields["fingerprint"],
+                                     fields["display-name"].lower(),
+                                     key])
     
     def show_key(self, store, the_iter, data):
         search = self.ui.search.get_text()
@@ -79,7 +79,7 @@ class Encrypter(object):
             key = self.chosen[-1]
             encrypted = cr_service.EncryptText([key], "", 0, cleartext)
             return encrypted
-        except dbus.exceptions.DBusException, msg:
+        except dbus.exceptions.DBusException as msg:
             self.ui.error.set_title( "Encryption error" )
             self.ui.error.set_markup( "The encryption process failed due to the following error:" )
             self.ui.error.format_secondary_text( msg )
@@ -94,7 +94,7 @@ class Encrypter(object):
             # Notice "signer" is not returned:
             cleartext, signer = cr_service.DecryptText( "openpgp", 0, encrypted_text )
             return cleartext
-        except dbus.exceptions.DBusException, msg:
+        except dbus.exceptions.DBusException as msg:
             self.ui.error.set_title( "Decryption error" )
             self.ui.error.set_markup( "The decryption process failed due to the following error:" )
             self.ui.error.format_secondary_text( msg )

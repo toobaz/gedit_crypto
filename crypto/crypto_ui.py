@@ -41,7 +41,7 @@ class Ui(object):
                 self.obj = obj
                 return obj
             else:
-                raise AttributeError, "no object named \"%s\" in the GUI." % attr_name
+                raise AttributeError("no object named \"%s\" in the GUI." % attr_name)
     
     def connect_signals(self, target):
         self._builder.connect_signals( target )
