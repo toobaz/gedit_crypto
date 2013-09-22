@@ -37,6 +37,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         manager = self.window.get_ui_manager()
         manager.remove_ui( self.ui_id )
         manager.ensure_update()
+        manager.remove_action_group(self.action_group)
     
     def do_update_state(self):
         pass
