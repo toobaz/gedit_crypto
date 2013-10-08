@@ -16,8 +16,8 @@ gpg or seahorse.
 To install for a single user:
 
   cd gedit-plugin-crypto-*
-  ln -s crypto.plugin ~/local/share/gedit/plugins/crypto.plugin
-  ln -s crypto ~/local/share/gedit/plugins/crypto
+  ln -s crypto.plugin ~/.local/share/gedit/plugins/crypto.plugin
+  ln -s crypto ~/.local/share/gedit/plugins/crypto
 
 To install systemwise (as root):
 
