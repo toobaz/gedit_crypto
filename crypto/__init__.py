@@ -1,8 +1,11 @@
-from gi.repository import GObject, Gedit, Gtk, Gedit
+from gi.repository import GObject, Gedit, Gio
 import os
 from .encrypter import Encrypter
 
 __version__ = '0.3'
+
+ACTIONS = {'encrypt' : _("Encrypt document"),
+           'decrypt' : _("Decrypt document")}
 
 class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "CryptoPlugin"
@@ -25,44 +28,30 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         self.ui = Ui( "gedit-crypto", ui_path )
         self.ui.connect_signals( self )
         
-        self.insert_menu_items()
+        self.actions = {}
+        
+        for action_name in ACTIONS:
+            action = Gio.SimpleAction(name=action_name)
+            self.actions[action_name] = action
+            action.connect('activate', getattr(self, action_name))
+            self.window.add_action(action)
+            self.window.lookup_action(action_name).set_enabled(True)
         
         # Build encrypter when needed to not slow down Gedit startup
         self.enc = None
     
     def do_deactivate(self):
         """
-        Just remove submenu.
+        Remove actions.
         """
-        manager = self.window.get_ui_manager()
-        manager.remove_ui( self.ui_id )
-        manager.ensure_update()
-        manager.remove_action_group(self.action_group)
+        while self.actions:
+            name, action = self.actions.popitem()
+            self.window.remove_action(name)
     
     def do_update_state(self):
         pass
     
-    def insert_menu_items(self):
-        """
-        Insert submenu and menu items in Gedit "File" menu.
-        """
-        manager = self.window.get_ui_manager()
-        
-        self.action_group = Gtk.ActionGroup("CryptoActions")
-        
-        self.action_group.add_action( self.ui.EncryptAction )
-        self.action_group.add_action( self.ui.DecryptAction )
-        self.action_group.add_action( self.ui.CryptoAction )
-        
-        manager.insert_action_group( self.action_group )
-        
-        menu_ui_path = os.path.join( self.data_dir, "menu_ui.xml" )
-        
-        self.ui_id = manager.add_ui_from_file( menu_ui_path )
-        
-        manager.ensure_update()
-    
-    def encrypt(self, action):
+    def encrypt(self, *args):
         if self.enc == None:
             self.enc = Encrypter( self.ui )
         
@@ -75,7 +64,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         
         self.show_in_new_document( encrypted )
     
-    def decrypt(self, action):
+    def decrypt(self, *args):
         if self.enc == None:
             self.enc = Encrypter( self.ui )
         
@@ -100,3 +89,21 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         new_view = self.window.get_active_view()
         new_doc = new_view.get_buffer()
         new_doc.set_text( text )
+
+
+class GeditCryptoApp(GObject.Object, Gedit.AppActivatable):
+    __gtype_name__ = "GeditCryptoApp"
+    app = GObject.property(type=Gedit.App)
+    
+    def do_activate(self):
+        self.submenu_ext = self.extend_menu("tools-section-1")
+        submenu = Gio.Menu()
+        item = Gio.MenuItem.new_submenu(_("Encrypt/decrypt"), submenu)
+        self.submenu_ext.append_menu_item(item)
+        
+        for action in ACTIONS:
+            item = Gio.MenuItem.new(ACTIONS[action], "win.%s" % action)
+            submenu.append_item(item)
+    
+    def do_deactivate(self):
+        del self.submenu_ext

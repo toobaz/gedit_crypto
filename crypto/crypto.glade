@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.2 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkAction" id="CryptoAction">
-    <property name="label" translatable="yes">Encrypt/decrypt</property>
-  </object>
-  <object class="GtkAction" id="DecryptAction">
-    <property name="label" translatable="yes">Decrypt document</property>
-    <property name="short_label" translatable="yes">Decrypt document</property>
-    <signal name="activate" handler="decrypt" swapped="no"/>
-  </object>
-  <object class="GtkAction" id="EncryptAction">
-    <property name="label" translatable="yes">Encrypt document</property>
-    <signal name="activate" handler="encrypt" swapped="no"/>
-  </object>
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkMessageDialog" id="error">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -38,7 +27,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -98,7 +86,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -115,7 +102,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
