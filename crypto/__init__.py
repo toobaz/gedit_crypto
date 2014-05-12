@@ -2,7 +2,7 @@ from gi.repository import GObject, Gedit, Gio
 import os
 from .encrypter import Encrypter
 
-__version__ = '0.3'
+__version__ = '0.4'
 
 ACTIONS = {'encrypt' : _("Encrypt document"),
            'decrypt' : _("Decrypt document")}
