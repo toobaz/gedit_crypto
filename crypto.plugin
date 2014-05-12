@@ -5,6 +5,6 @@ IAge=3
 Name=Crypto
 Description=Encrypt/decrypt using Seahorse DBus service
 Authors=Pietro Battiston
-Copyright=Copyright © 2013 Pietro Battiston
+Copyright=Copyright © 2013-2014 Pietro Battiston
 Website=http://pietrobattiston.it/gedit-crypto
 Version=0.3
