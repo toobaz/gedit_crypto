@@ -24,6 +24,8 @@ To install systemwise (as root):
   cd gedit-plugin-crypto-*
   ln -s crypto.plugin /usr/lib/gedit/plugins/crypto.plugin
   ln -s crypto /usr/lib/gedit/plugins/crypto
+  mkdir /usr/share/gedit/plugins/crypto
+  ln -s crypto/crypto.glade /usr/share/gedit/plugins/crypto/crypto.glade
 
 ===== Who should I blame if this sucks? =====
 
