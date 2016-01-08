@@ -38,4 +38,5 @@ service, which does the real work.
 
 ===== Requirements =====
 
-Gedit version 3 or later and Seahorse must be installed for the plugin to work.
+Gedit version 3 or later and the Seahorse daemon must be installed for the
+plugin to work.
