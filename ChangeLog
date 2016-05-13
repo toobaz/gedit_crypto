@@ -1,3 +1,7 @@
+gedit-plugin-crypto 0.5, 2016-05-13
+  * Suppress warning relative to gi version
+  * Updated docs
+
 gedit-plugin-crypto 0.4, 2014-05-12
   * Support for GEdit 3.12
   * Minor fixes
