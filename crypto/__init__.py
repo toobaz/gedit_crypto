@@ -1,3 +1,5 @@
+import gi
+gi.require_version('Gedit', '3.0')
 from gi.repository import GObject, Gedit, Gio
 import os
 from .encrypter import Encrypter
