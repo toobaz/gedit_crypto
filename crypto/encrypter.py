@@ -1,5 +1,6 @@
 import dbus
 from gi.repository import GLib, Gtk
+import warnings
 
 class Encrypter(object):
     def __init__(self, ui):
@@ -48,7 +49,11 @@ class Encrypter(object):
         # "display-id" always the same as "raw-id"
         
         for key in keys:
-            fields = dict( self.keyset.GetKeyFields(key, fields_names ) )
+            try:
+                fields = dict( self.keyset.GetKeyFields(key, fields_names ) )
+            except dbus.exceptions.DBusException as exc:
+                warnings.warn("Loading of key \"%s\" failed:\n%s"
+                              % (key, exc))
             if "fingerprint" in fields:
                 self.ui.keys.append([fields["display-name"],
                                      fields["display-id"],
