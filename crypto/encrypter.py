@@ -48,7 +48,15 @@ class Encrypter(object):
         # Never found: "expires","enc-type"
         # "display-id" always the same as "raw-id"
         
+        duplicates = set()
+        
         for key in keys:
+            if key.count(':') == 2:
+                # The correct format is e.g. "openpgp:0123456789ABCDE0";
+                # if a key looks like "openpgp:0123456789ABCDE0:2",
+                # it signals that there is a duplicate:
+                duplicates.add(key)
+                continue
             try:
                 fields = dict( self.keyset.GetKeyFields(key, fields_names ) )
             except dbus.exceptions.DBusException as exc:
@@ -60,6 +68,8 @@ class Encrypter(object):
                                      fields["fingerprint"],
                                      fields["display-name"].lower(),
                                      key])
+        warnings.warn("Discarded the following keys, apparently duplicates:\n"
+                      "%s" % duplicates)
     
     def show_key(self, store, the_iter, data):
         search = self.ui.search.get_text()
@@ -87,7 +97,7 @@ class Encrypter(object):
         except dbus.exceptions.DBusException as msg:
             self.ui.error.set_title( "Encryption error" )
             self.ui.error.set_markup( "The encryption process failed due to the following error:" )
-            self.ui.error.format_secondary_text( msg )
+            self.ui.error.format_secondary_text( str(msg) )
             self.ui.error.run()
             self.ui.error.hide()
     
