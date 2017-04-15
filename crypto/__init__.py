@@ -1,8 +1,11 @@
 import gi
 gi.require_version('Gedit', '3.0')
-from gi.repository import GObject, Gedit, Gio, Gtk
+from gi.repository import GObject, Gedit, Gio, Gtk, PeasGtk
 import os
+
 from .encrypter import Encrypter
+
+from .config import ConfigSettings, ConfigDialog
 
 __version__ = '0.5'
 
@@ -12,15 +15,31 @@ MENU_ACTIONS = {'menu_encrypt' : _("Encrypt document"),
 POPUP_ACTIONS = {'popup_encrypt' : _("Encrypt"),
                  'popup_decrypt' : _("Decrypt")}
 
-class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
+class GeditCrypto(GObject.Object, Gedit.WindowActivatable, PeasGtk.Configurable):
     __gtype_name__ = "CryptoPlugin"
     window = GObject.property(type=Gedit.Window)
 
     def __init__(self):
         GObject.Object.__init__(self)
+
         self.window = None
         # Build encrypter when needed to not slow down Gedit startup
         self.enc = None
+        self.ui = None
+
+        self.config = ConfigSettings()
+
+
+    def do_create_configure_widget(self):
+        ConfigDialog(self.config)
+
+    def initialize_ui(self):
+        if self.ui is None:
+            from .crypto_ui import Ui
+            self.data_dir = self.plugin_info.get_data_dir()
+            ui_path = os.path.join( self.data_dir, "crypto.glade" )
+            self.ui = Ui( "gedit-crypto", ui_path )
+            self.ui.connect_signals( self )
 
     def do_activate(self):
         try:
@@ -31,13 +50,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             print(traceback.print_exc())
 
     def initialize(self):
-        from .crypto_ui import Ui
-
-        self.data_dir = self.plugin_info.get_data_dir()
-
-        ui_path = os.path.join( self.data_dir, "crypto.glade" )
-        self.ui = Ui( "gedit-crypto", ui_path )
-        self.ui.connect_signals( self )
+        self.initialize_ui()
 
         self.actions = {}
 
@@ -48,14 +61,17 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             self.window.add_action(action)
             self.window.lookup_action(action_name).set_enabled(True)
 
-        handler_ids = []
-        for signal in ('tab-added', 'tab-removed'):
-            method = getattr(self, 'on_window_' + signal.replace('-', '_'))
-            handler_ids.append(self.window.connect(signal, method))
 
-        self.window.OpenURIContextMenuPluginID = handler_ids
-        for view in self.window.get_views():
-            self.connect_view(view)
+        if(self.config.get_bool("showpopup")):
+            handler_ids = []
+            for signal in ('tab-added', 'tab-removed'):
+                method = getattr(self, 'on_window_' + signal.replace('-', '_'))
+                handler_ids.append(self.window.connect(signal, method))
+
+            self.window.OpenURIContextMenuPluginID = handler_ids
+            for view in self.window.get_views():
+                self.connect_view(view)
+                
 
     def on_window_tab_added(self, window, tab):
         self.connect_view(tab.get_view())
