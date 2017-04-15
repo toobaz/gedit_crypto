@@ -70,6 +70,18 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         while self.actions:
             name, action = self.actions.popitem()
             self.window.remove_action(name)
+        """
+        Remove widgets
+        """
+        for view in [self.window] + self.window.get_views():
+            handler_ids = view.OpenURIContextMenuPluginID
+            if not handler_ids is None:
+                for handler_id in handler_ids:
+                    view.disconnect(handler_id)
+
+            view.OpenURIContextMenuPluginID = None
+
+        self.window = None
 
     def do_update_state(self):
         pass
