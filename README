@@ -1,19 +1,22 @@
 ===== What is this? =====
 
-Crypto is a simple plugin for the Gedit
+Crypto is a simple plugin for the gedit
 ( http://projects.gnome.org/gedit/ ) editor, allowing you to quickly
-encrypt/decrypt text documents.
+encrypt/decrypt text documents with GPG.
 
 Once installed and activated (through the "Preferences" window, "Plugin" tab),
-it will add a submenu to the "File" menu, with two options allowing you to
+it will add a submenu to the "Gear" menu, with two options allowing you to
 encrypt or decrypt the currently open document.
 
-Notice that to encrypt/decrypt, you should already have set up your key using
+Notice that to encrypt/decrypt, you should have already set up your key using
 gpg or seahorse.
 
 ===== How to install? =====
 
-To install for a single user:
+If you are a user of Debian (or any derivative such as Ubuntu or Mint),
+the simplest way is to download and install the .deb package above.
+
+Otherwise, to install for a single user, extract the archive and then:
 
   cd gedit-plugin-crypto-*
   ln -s crypto.plugin ~/.local/share/gedit/plugins/crypto.plugin
@@ -38,5 +41,15 @@ service, which does the real work.
 
 ===== Requirements =====
 
-Gedit version 3 or later and the Seahorse daemon must be installed for the
-plugin to work.
+Gedit version 3 or later and the Seahorse daemon must be installed for the plugin to work.
+
+In particular, current versions need gedit 3.12 or later; if you're using a previous version of gedit,
+{{:gedit-crypto:gedit-plugin-crypto-0.3.tar.gz|download version 0.3 of gedit-crypto.}}
+
+If your version of gedit is even older than 3.8, you need {{:gedit-crypto:gedit-plugin-crypto-0.2.tar.gz|version 0.2 of gedit-crypto.}}
+
+===== Code =====
+
+You can browse/clone/fork the git repo at
+[[https://github.com/toobaz/gedit_crypto ]] . I'm willing to integrate
+enhancements/bug fixes, so feel free to open PRs.
