@@ -112,7 +112,6 @@ class Encrypter(object):
         except dbus.exceptions.DBusException as msg:
             self.ui.error.set_title( "Decryption error" )
             self.ui.error.set_markup( "The decryption process failed due to the following error:" )
-            self.ui.error.format_secondary_text( msg )
+            self.ui.error.format_secondary_text( str(msg) )
             self.ui.error.run()
             self.ui.error.hide()
-
