@@ -18,6 +18,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         self.window = None
         # Build encrypter when needed to not slow down Gedit startup
         self.enc = None
+        self.handlers_ids = defaultdict(list)
 
     def do_activate(self):
         try:
@@ -54,18 +55,25 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         self.connect_view(tab.get_view())
 
     def do_deactivate(self):
-        """
-        Remove actions.
-        """
+
+        # Remove actions
         while self.actions:
             name, action = self.actions.popitem()
             self.window.remove_action(name)
+
+        # Disconnect widgets
+        for widget in [self.window] + self.window.get_views():
+            for h_id in self.handlers_ids[widget]:
+                widget.disconnect(h_id)
+
+        self.window = None
 
     def do_update_state(self):
         pass
 
     def connect_view(self, view):
-        view.connect('populate-popup', self.on_view_populate_popup)
+        h_id = view.connect('populate-popup', self.on_view_populate_popup)
+        self.handlers_ids[view].append(h_id)
 
     def on_view_populate_popup(self, view, menu):
         separator = Gtk.SeparatorMenuItem()
