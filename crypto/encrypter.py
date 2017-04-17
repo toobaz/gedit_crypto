@@ -95,8 +95,8 @@ class Encrypter(object):
             encrypted = cr_service.EncryptText([key], "", 0, cleartext)
             return encrypted
         except dbus.exceptions.DBusException as msg:
-            self.ui.error.set_title( "Encryption error" )
-            self.ui.error.set_markup( "The encryption process failed due to the following error:" )
+            self.ui.error.set_title( _("Encryption error") )
+            self.ui.error.set_markup( _("The encryption process failed due to the following error:") )
             self.ui.error.format_secondary_text( str(msg) )
             self.ui.error.run()
             self.ui.error.hide()
@@ -110,8 +110,8 @@ class Encrypter(object):
             cleartext, signer = cr_service.DecryptText( "openpgp", 0, encrypted_text )
             return cleartext
         except dbus.exceptions.DBusException as msg:
-            self.ui.error.set_title( "Decryption error" )
-            self.ui.error.set_markup( "The decryption process failed due to the following error:" )
+            self.ui.error.set_title( _("Decryption error") )
+            self.ui.error.set_markup( _("The decryption process failed due to the following error:") )
             self.ui.error.format_secondary_text( str(msg) )
             self.ui.error.run()
             self.ui.error.hide()
