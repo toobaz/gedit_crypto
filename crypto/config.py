@@ -6,7 +6,7 @@ class ConfigDialog(Gtk.Dialog):
         self.config = config
 
         Gtk.Dialog.__init__(self,
-                            "Settings",
+                            _("Settings"),
                             None,
                             Gtk.DialogFlags.DESTROY_WITH_PARENT)
 
@@ -22,7 +22,7 @@ class ConfigDialog(Gtk.Dialog):
         config_box = Gtk.VBox(False, 6)
         config_box.set_border_width(6)
 
-        checkbox_label = "Show popup menu (needs restart)"
+        checkbox_label = _("Show popup menu (needs restart)")
         showpopup_checkbox = Gtk.CheckButton(checkbox_label,
                                               use_underline = True)
         showpopup_checkbox.connect('clicked',
