@@ -1,0 +1,71 @@
+# French translations for gedit-crypto package
+# Traductions françaises du paquet gedit-crypto.
+# Copyright (C) 2017 Pietro Battiston
+# This file is distributed under the same license as gedit-crypto.
+# Emmanuel Bossière, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gedit-crypto 0.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-05 20:38+0200\n"
+"PO-Revision-Date: 2017-04-17 19:31+0200\n"
+"Last-Translator: Emmanuel Bossière\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: encrypter.py:98
+msgid "Encryption error"
+msgstr "Erreur de chiffrement"
+
+#: encrypter.py:99
+msgid "The encryption process failed due to the following error:"
+msgstr "Le chiffrement a échoué en raison de l'erreur suivante:"
+
+#: encrypter.py:113
+msgid "Decryption error"
+msgstr "Erreur de déchiffrement"
+
+#: encrypter.py:114
+msgid "The decryption process failed due to the following error:"
+msgstr "Le déchiffrement a échoué en raison de l'erreur suivante:"
+
+#: __init__.py:20
+msgid "Encrypt document"
+msgstr "Chiffrer le document"
+
+#: __init__.py:21
+msgid "Decrypt document"
+msgstr "Déchiffrer le document"
+
+#: __init__.py:168
+msgid "Encrypt/decrypt"
+msgstr "Chiffrer/déchiffrer"
+
+#: crypto.glade:74
+msgid "Key selection"
+msgstr "Sélection de la clé"
+
+#: crypto.glade:138
+msgid "Search:"
+msgstr "Recherche:"
+
+#: crypto.glade:183
+msgid "Key"
+msgstr "Clé"
+
+#: crypto.glade:194
+msgid "Id"
+msgstr "Identifiant"
+
+#: crypto.glade:205
+msgid "Fingerprint"
+msgstr "Empreinte"
+
+#: crypto.glade:246
+msgid "Show popup menu (needs restart)"
+msgstr "Afficher l'option dans le menu contextuel (redémarrage nécessaire)"

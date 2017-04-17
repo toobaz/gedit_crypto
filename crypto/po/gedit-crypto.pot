@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017 Pietro Battiston
+# This file is distributed under the same license as the gedit-crypto package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: gedit-crypto 0.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-05 20:38+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: encrypter.py:98
+msgid "Encryption error"
+msgstr ""
+
+#: encrypter.py:99
+msgid "The encryption process failed due to the following error:"
+msgstr ""
+
+#: encrypter.py:113
+msgid "Decryption error"
+msgstr ""
+
+#: encrypter.py:114
+msgid "The decryption process failed due to the following error:"
+msgstr ""
+
+#: __init__.py:20
+msgid "Encrypt document"
+msgstr ""
+
+#: __init__.py:21
+msgid "Decrypt document"
+msgstr ""
+
+#: __init__.py:168
+msgid "Encrypt/decrypt"
+msgstr ""
+
+#: crypto.glade:74
+msgid "Key selection"
+msgstr ""
+
+#: crypto.glade:138
+msgid "Search:"
+msgstr ""
+
+#: crypto.glade:183
+msgid "Key"
+msgstr ""
+
+#: crypto.glade:194
+msgid "Id"
+msgstr ""
+
+#: crypto.glade:205
+msgid "Fingerprint"
+msgstr ""
+
+#: crypto.glade:246
+msgid "Show popup menu (needs restart)"
+msgstr ""
