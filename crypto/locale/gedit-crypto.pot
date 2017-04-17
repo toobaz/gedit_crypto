@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-17 19:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: config.py:9
+msgid "Settings"
+msgstr ""
+
+#: config.py:25
+msgid "Show popup menu (needs restart)"
+msgstr ""
+
+#: encrypter.py:97
+msgid "Encryption error"
+msgstr ""
+
+#: encrypter.py:98
+msgid "The encryption process failed due to the following error:"
+msgstr ""
+
+#: encrypter.py:112
+msgid "Decryption error"
+msgstr ""
+
+#: encrypter.py:113
+msgid "The decryption process failed due to the following error:"
+msgstr ""
+
+#: __init__.py:18
+msgid "Encrypt document"
+msgstr ""
+
+#: __init__.py:19
+msgid "Decrypt document"
+msgstr ""
+
+#: __init__.py:21
+msgid "Encrypt"
+msgstr ""
+
+#: __init__.py:22
+msgid "Decrypt"
+msgstr ""
+
+#: __init__.py:202
+msgid "Encrypt/decrypt"
+msgstr ""
+
+#: crypto.glade:74
+msgid "Key selection"
+msgstr ""
+
+#: crypto.glade:138
+msgid "Search:"
+msgstr ""
+
+#: crypto.glade:183
+msgid "Key"
+msgstr ""
+
+#: crypto.glade:194
+msgid "Id"
+msgstr ""
+
+#: crypto.glade:205
+msgid "Fingerprint"
+msgstr ""

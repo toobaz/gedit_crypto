@@ -3,11 +3,19 @@ gi.require_version('Gedit', '3.0')
 from gi.repository import GObject, Gedit, Gio, Gtk, PeasGtk
 import os
 
+import locale
+import gettext
+
 from .encrypter import Encrypter
 
 from .config import ConfigSettings, ConfigDialog
 
 __version__ = '0.5'
+__APP__ = 'gedit-crypto'
+__DIR__ = os.path.join(os.path.dirname(__file__), 'locale')
+
+gettext.install(__APP__, __DIR__)
+locale.bindtextdomain(__APP__, __DIR__)
 
 MENU_ACTIONS = {'menu_encrypt' : _("Encrypt document"),
                 'menu_decrypt' : _("Decrypt document")}
@@ -38,7 +46,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable, PeasGtk.Configurable)
             from .crypto_ui import Ui
             self.data_dir = self.plugin_info.get_data_dir()
             ui_path = os.path.join( self.data_dir, "crypto.glade" )
-            self.ui = Ui( "gedit-crypto", ui_path )
+            self.ui = Ui( __APP__, ui_path )
             self.ui.connect_signals( self )
 
     def do_activate(self):
@@ -71,7 +79,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable, PeasGtk.Configurable)
             self.window.OpenURIContextMenuPluginID = handler_ids
             for view in self.window.get_views():
                 self.connect_view(view)
-                
+
 
     def on_window_tab_added(self, window, tab):
         self.connect_view(tab.get_view())

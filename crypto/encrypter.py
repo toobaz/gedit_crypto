@@ -60,16 +60,15 @@ class Encrypter(object):
             try:
                 fields = dict( self.keyset.GetKeyFields(key, fields_names ) )
             except dbus.exceptions.DBusException as exc:
-                warnings.warn(_("Loading of key \"%s\" failed:\n%s")
-                              % (key, exc))
+                warnings.warn( ("Loading of key \"%(key)\" failed:\n%(exc)")
+                              % {'key': key, 'exc': exc} )
             if "fingerprint" in fields:
                 self.ui.keys.append([fields["display-name"],
                                      fields["display-id"],
                                      fields["fingerprint"],
                                      fields["display-name"].lower(),
                                      key])
-        warnings.warn(_("Discarded the following keys, apparently duplicates:\n")
-                      "%s" % duplicates)
+        warnings.warn( ("Discarded the following keys, apparently duplicates:\n%s") % duplicates )
 
     def show_key(self, store, the_iter, data):
         search = self.ui.search.get_text()
