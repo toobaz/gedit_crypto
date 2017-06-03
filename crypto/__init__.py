@@ -1,6 +1,6 @@
 import gi
 gi.require_version('Gedit', '3.0')
-from gi.repository import GObject, Gedit, Gio
+from gi.repository import GObject, Gedit, Gio, Gtk
 import os
 from .encrypter import Encrypter
 
@@ -45,6 +45,14 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             self.window.add_action(action)
             self.window.lookup_action(action_name).set_enabled(True)
 
+        self.window.connect('tab-added', self.on_window_tab_added)
+
+        for view in self.window.get_views():
+            self.connect_view(view)
+
+    def on_window_tab_added(self, window, tab):
+        self.connect_view(tab.get_view())
+
     def do_deactivate(self):
         """
         Remove actions.
@@ -55,6 +63,20 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
 
     def do_update_state(self):
         pass
+
+    def connect_view(self, view):
+        view.connect('populate-popup', self.on_view_populate_popup)
+
+    def on_view_populate_popup(self, view, menu):
+        separator = Gtk.SeparatorMenuItem()
+        separator.show();
+        menu.append(separator)
+
+        for action in ACTIONS:
+            menu_item = Gtk.MenuItem(ACTIONS[action])
+            menu_item.connect('activate', getattr(self, action))
+            menu_item.show();
+            menu.append(menu_item)
 
     def encrypt(self, *args):
         if self.enc == None:
