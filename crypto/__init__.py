@@ -3,6 +3,7 @@ gi.require_version('Gedit', '3.0')
 from gi.repository import GObject, Gedit, Gio, Gtk
 import os
 from .encrypter import Encrypter
+from collections import defaultdict
 
 __version__ = '0.5'
 
@@ -19,6 +20,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         # Build encrypter when needed to not slow down Gedit startup
         self.enc = None
         self.handlers_ids = defaultdict(list)
+        self.ui = None
 
     def do_activate(self):
         try:
@@ -29,13 +31,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             print(traceback.print_exc())
 
     def initialize(self):
-        from .crypto_ui import Ui
-
-        self.data_dir = self.plugin_info.get_data_dir()
-
-        ui_path = os.path.join( self.data_dir, "crypto.glade" )
-        self.ui = Ui( "gedit-crypto", ui_path )
-        self.ui.connect_signals( self )
+        self.initialize_ui()
 
         self.actions = {}
 
@@ -50,6 +46,14 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
 
         for view in self.window.get_views():
             self.connect_view(view)
+
+    def initialize_ui(self):
+        if self.ui is None:
+            from .crypto_ui import Ui
+            self.data_dir = self.plugin_info.get_data_dir()
+            ui_path = os.path.join( self.data_dir, "crypto.glade" )
+            self.ui = Ui( "gedit-crypto", ui_path )
+            self.ui.connect_signals( self )
 
     def on_window_tab_added(self, window, tab):
         self.connect_view(tab.get_view())
