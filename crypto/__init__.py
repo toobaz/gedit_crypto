@@ -13,6 +13,12 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "CryptoPlugin"
     window = GObject.property(type=Gedit.Window)
 
+    def __init__(self):
+        GObject.Object.__init__(self)
+        self.window = None
+        # Build encrypter when needed to not slow down Gedit startup
+        self.enc = None
+
     def do_activate(self):
         try:
             self.initialize()
@@ -38,9 +44,6 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             action.connect('activate', getattr(self, action_name))
             self.window.add_action(action)
             self.window.lookup_action(action_name).set_enabled(True)
-
-        # Build encrypter when needed to not slow down Gedit startup
-        self.enc = None
 
     def do_deactivate(self):
         """
@@ -96,6 +99,10 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
 class GeditCryptoApp(GObject.Object, Gedit.AppActivatable):
     __gtype_name__ = "GeditCryptoApp"
     app = GObject.property(type=Gedit.App)
+
+    def __init__(self):
+        GObject.Object.__init__(self)
+        self.app = None
 
     def do_activate(self):
         self.submenu_ext = self.extend_menu("tools-section-1")
