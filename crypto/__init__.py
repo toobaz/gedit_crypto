@@ -1,16 +1,19 @@
 import gi
 gi.require_version('Gedit', '3.0')
-from gi.repository import GObject, Gedit, Gio, Gtk
+from gi.repository import GObject, Gedit, Gio, Gtk, PeasGtk
 import os
-from .encrypter import Encrypter
 from collections import defaultdict
+
+from .encrypter import Encrypter
+from .config import load_config
 
 __version__ = '0.5'
 
 ACTIONS = {'encrypt' : _("Encrypt document"),
            'decrypt' : _("Decrypt document")}
 
-class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
+class GeditCrypto(GObject.Object, Gedit.WindowActivatable,
+                  PeasGtk.Configurable):
     __gtype_name__ = "CryptoPlugin"
     window = GObject.property(type=Gedit.Window)
 
@@ -21,6 +24,11 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
         self.enc = None
         self.handlers_ids = defaultdict(list)
         self.ui = None
+        self.config = load_config()
+
+    def do_create_configure_widget(self):
+        self.initialize_ui()
+        return self.ui.settings_vbox
 
     def do_activate(self):
         try:
@@ -42,10 +50,12 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             self.window.add_action(action)
             self.window.lookup_action(action_name).set_enabled(True)
 
-        self.window.connect('tab-added', self.on_window_tab_added)
+        # FIXME: do not require restart
+        if self.config.get_boolean('show-popup'):
+            self.window.connect('tab-added', self.on_window_tab_added)
 
-        for view in self.window.get_views():
-            self.connect_view(view)
+            for view in self.window.get_views():
+                self.connect_view(view)
 
     def initialize_ui(self):
         if self.ui is None:
@@ -54,6 +64,12 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable):
             ui_path = os.path.join( self.data_dir, "crypto.glade" )
             self.ui = Ui( "gedit-crypto", ui_path )
             self.ui.connect_signals( self )
+
+            self.config.bind('show-popup',
+                             self.ui.show_popup_checkbox,
+                             'active',
+                             Gio.SettingsBindFlags.DEFAULT)
+
 
     def on_window_tab_added(self, window, tab):
         self.connect_view(tab.get_view())
