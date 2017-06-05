@@ -1,0 +1,71 @@
+# Italian translations for gedit-crypto
+# Traduzione italiana del pacchetto gedit-crypto.
+# Copyright (C) 2017 Pietro Battiston
+# This file is distributed under the same license as gedit-crypto.
+# Pietro Battiston, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gedit-crypto 0.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-05 20:38+0200\n"
+"PO-Revision-Date: 2017-06-05 12:21+0200\n"
+"Last-Translator: Pietro Battiston\n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: encrypter.py:98
+msgid "Encryption error"
+msgstr "Errore di cifratura"
+
+#: encrypter.py:99
+msgid "The encryption process failed due to the following error:"
+msgstr "Il processo di cifraggio è fallito a causa del seguente errore:"
+
+#: encrypter.py:113
+msgid "Decryption error"
+msgstr "Errore di decifratura"
+
+#: encrypter.py:114
+msgid "The decryption process failed due to the following error:"
+msgstr "Il processo di decifraggio è fallito a causa del seguente errore:"
+
+#: __init__.py:20
+msgid "Encrypt document"
+msgstr "Cifra documento"
+
+#: __init__.py:21
+msgid "Decrypt document"
+msgstr "Decifra documento"
+
+#: __init__.py:168
+msgid "Encrypt/decrypt"
+msgstr "Cifra/decifra"
+
+#: crypto.glade:74
+msgid "Key selection"
+msgstr "Selezione della chiave"
+
+#: crypto.glade:138
+msgid "Search:"
+msgstr "Cerca:"
+
+#: crypto.glade:183
+msgid "Key"
+msgstr "Chiave"
+
+#: crypto.glade:194
+msgid "Id"
+msgstr "ID"
+
+#: crypto.glade:205
+msgid "Fingerprint"
+msgstr "Impronta"
+
+#: crypto.glade:246
+msgid "Show popup menu (needs restart)"
+msgstr "Mostra menu contestuale (necessario il riavvio)"
