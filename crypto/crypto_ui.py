@@ -31,7 +31,7 @@ class Ui(object):
         self._builder = Gtk.Builder()
         self._builder.set_translation_domain( APP )
         self._builder.add_from_file( filename )
-    
+
     def __getattr__(self, attr_name):
         try:
             return object.__getattribute__( self, attr_name )
@@ -42,6 +42,6 @@ class Ui(object):
                 return obj
             else:
                 raise AttributeError("no object named \"%s\" in the GUI." % attr_name)
-    
+
     def connect_signals(self, target):
         self._builder.connect_signals( target )

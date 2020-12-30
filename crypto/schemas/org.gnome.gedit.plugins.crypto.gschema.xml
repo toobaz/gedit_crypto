@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.gedit.plugins.crypto"
+          path="/org/gnome/gedit/plugins/crypto/">
+    <key type="b" name="show-popup">
+      <default>true</default>
+      <summary>Show popup menu</summary>
+      <description>Show popup menu with inline encrypt/decrypt option.</description>
+    </key>
+  </schema>
+</schemalist>
