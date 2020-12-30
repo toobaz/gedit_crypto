@@ -48,7 +48,6 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable,
 
     def initialize(self):
         self.initialize_ui()
-
         self.actions = {}
 
         for action_name in ACTIONS:
@@ -68,7 +67,7 @@ class GeditCrypto(GObject.Object, Gedit.WindowActivatable,
     def initialize_ui(self):
         if self.ui is None:
             from .crypto_ui import Ui
-            self.data_dir = self.plugin_info.get_data_dir()
+            self.data_dir = os.path.dirname(__file__)
             ui_path = os.path.join( self.data_dir, "crypto.glade" )
             self.ui = Ui( __APP__, ui_path )
             self.ui.connect_signals( self )
